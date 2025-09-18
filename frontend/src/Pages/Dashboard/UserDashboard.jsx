@@ -5,9 +5,9 @@ import {Outlet} from 'react-router-dom'
 const UserDashboard = () => {
 	return (
 		<>
-			<div className="flex bg-gray-900 text-gray-100 min-h-screen">
+			<div className="flex text-gray-100 min-h-screen">
 			<Sidebar/>
-			<div className="flex-1 min-h-screen lg:ml-72 p-6">
+			<div className=" flex-1 min-h-screen w-full lg:ml-72 ">
 			<Outlet/>
       </div>
 			</div>

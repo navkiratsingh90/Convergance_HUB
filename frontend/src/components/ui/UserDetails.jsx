@@ -22,11 +22,11 @@ const UserProfile = () => {
     <div
       className={`min-h-screen  transition-colors duration-300 ${
         darkMode
-          ? "bg-gray-900"
-          : "bg-gradient-to-br from-blue-50 to-indigo-50"
+          ? "bg-[var(--color-darkBlue)]"
+          : "bg-[var(--color-white)]"
       }`}
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className={`max-w-5xl mx-auto px-4 bg-[var(--color-darkBlue)] sm:px-6  py-6 ${darkMode ? "bg-[var(--color-darkBlue)]" : "bg-[var(--color-white)]"}`}>
         {/* Header with dark mode toggle */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
           <h1
@@ -80,9 +80,7 @@ const UserProfile = () => {
 
         {/* Main Profile Card */}
         <div
-          className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 ${
-            darkMode ? "bg-gray-800" : "bg-gray-900"
-          }`}
+          className={`rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 {darkMode ? "bg-[var(--color-darkBlue)]" : "bg-[var(--color-white)]"}`}
         >
           {/* Profile Banner */}
           <div className="h-24 sm:h-32 bg-gradient-to-r from-blue-500 to-blue-700"></div>
@@ -245,9 +243,7 @@ const UserProfile = () => {
 
         {/* Contact Information */}
         <div
-          className={`rounded-2xl shadow-lg p-4 sm:p-6 mt-6 sm:mt-8 transition-colors duration-300 ${
-            darkMode ? "bg-gray-800" : "bg-gray-900"
-          }`}
+          className={`rounded-2xl shadow-lg p-4 sm:p-6 mt-6 sm:mt-8 transition-colors duration-300 {darkMode ? "bg-[var(--color-darkBlue)]" : "bg-[var(--color-white)]"}`}
         >
           <h2
             className={`text-lg sm:text-xl font-bold mb-4 ${
@@ -280,9 +276,7 @@ const UserProfile = () => {
 
         {/* Recent Activity */}
         <div
-          className={`rounded-2xl shadow-lg p-4 sm:p-6 mt-6 sm:mt-8 transition-colors duration-300 ${
-            darkMode ? "bg-gray-800" : "bg-white"
-          }`}
+          className={`rounded-2xl shadow-lg p-4 sm:p-6 mt-6 sm:mt-8 transition-colors duration-300 {darkMode ? "bg-[var(--color-darkBlue)]" : "bg-[var(--color-white)]"}`}
         >
           <h2
             className={`text-lg sm:text-xl font-bold mb-6 ${
@@ -339,3 +333,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+

@@ -9,29 +9,45 @@ import EducationPage from "./components/ui/Education";
 import SocialFeed from "./components/ui/SocialActivity";
 import {Provider} from 'react-redux'
 import { store } from "./Store/Store";
+import ProjectsPage from "./components/ui/Projects";
+import SkillsPage from "./components/ui/Skills";
+import CertificationsPage from "./components/ui/Certifications";
+import HomePage from "./Pages/LandingPage";
 // import PopupForm from "./components/ui/PopupUserForm";
 
 const router = createBrowserRouter([
-  // { path: "/", element: <Sidebar /> },
+  { path: "/", element: <HomePage /> },
   {
-    path : '/',
+    path : '/user',
     element : <UserDashboard/>,
     children : [
       {
-        path : '/',
+        path : '/user',
         element : <UserProfile/>
       },
       {
-        path : '/work-experience',
+        path : '/user/work-experience',
         element : <WorkExperience/>
       },
       {
-        path : '/education',
+        path : '/user/education',
         element : <EducationPage/>
       },
       {
-        path : '/activity',
+        path : '/user/activity',
         element : <SocialFeed/>
+      },
+      {
+        path : '/user/projects',
+        element : <ProjectsPage/>
+      },
+      {
+        path : '/user/skills',
+        element : <SkillsPage/>
+      },
+      {
+        path : '/user/certifications',
+        element : <CertificationsPage/>
       }
     ]
   }
