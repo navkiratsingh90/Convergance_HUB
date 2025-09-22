@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PostActivity from "./PostActivity";
 import PostCard from "./PostCard";
-import { handleTheme } from "../../Features/ThemeSlice";
+import { handleTheme } from "../Features/ThemeSlice";
 
 const SocialFeed = () => {
   const darkMode = useSelector((state) => state.Theme.darkMode);

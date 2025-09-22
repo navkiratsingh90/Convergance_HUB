@@ -30,9 +30,9 @@ function Login() {
 
   return (
     <div className="min-h-screen w-screen flex items-center justify-center bg-[var(--color-darkBlue)] p-4">
-      <Card className="w-full max-w-sm shadow-lg">
+      <Card className="w-full bg-gray-800 border-0 max-w-sm shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl text-center font-normal">Login</CardTitle>
+          <CardTitle className="text-2xl text-center font-normal text-white">Login</CardTitle>
         </CardHeader>
 
         <form onSubmit={handleSubmit}>

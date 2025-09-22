@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleTheme } from "../../Features/ThemeSlice";
+import { handleTheme } from "../Features/ThemeSlice";
 
 const ProjectsPage = () => {
  const darkMode = useSelector((state) => state.Theme.darkMode)

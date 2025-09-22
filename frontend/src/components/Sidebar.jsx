@@ -41,7 +41,7 @@ const Sidebar = () => {
               <span className="font-bold text-white text-xl">jD</span>
             </div>
             <h1 className={`text-2xl font-bold `}>
-              <span className={`${darkMode ? "text-white" : "text-black"}`}>Join</span><span className="text-[#38bdf8]">Dev</span>
+              <span className={`${darkMode ? "text-white" : "text-black"}`}>Collab</span><span className="text-[#38bdf8]">riX</span>
             </h1>
           </div>
           <p className={`text-sm mt-2 ${darkMode ? "text-white" : "text-black"}`}>

@@ -1,22 +1,65 @@
 
 import React from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Sidebar from "./components/ui/Sidebar";
+import Sidebar from "./components/Sidebar";
 import UserDashboard from "./Pages/Dashboard/UserDashboard";
-import UserProfile from "./components/ui/UserDetails";
-import WorkExperience from "./components/ui/WorkEx";
-import EducationPage from "./components/ui/Education";
-import SocialFeed from "./components/ui/SocialActivity";
+import UserProfile from "./components/UserDetails";
+import WorkExperience from "./components/WorkEx";
+import EducationPage from "./components/Education";
+import SocialFeed from "./components/SocialActivity";
 import {Provider} from 'react-redux'
 import { store } from "./Store/Store";
-import ProjectsPage from "./components/ui/Projects";
-import SkillsPage from "./components/ui/Skills";
-import CertificationsPage from "./components/ui/Certifications";
-import HomePage from "./Pages/LandingPage";
+import ProjectsPage from "./components/Projects";
+import SkillsPage from "./components/Skills";
+// import SkillsPage from './components/'/
+import CertificationsPage from "./components/Certifications";
+import HomePage from "./Pages/Main/LandingPage";
+import Auth from "./Pages/Auth/Auth";
+import { LogIn } from "lucide-react";
+import Login from "./Pages/Auth/Login";
+import SignupPage from "./Pages/Auth/Signup";
+import Page from "./Pages/Main/Page";
+import ContactPage from "./Pages/Main/Contact";
+import AboutUsPage from "./Pages/Main/About";
+import FeedPage from "./Pages/Feed/Feed";
 // import PopupForm from "./components/ui/PopupUserForm";
 
 const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
+  {
+    path: '/auth',
+    element : <Auth/>,
+    children : [
+      {
+        path : '/auth/login',
+        element : <Login/>
+      },
+      {
+        path : '/auth/signup',
+        element : <SignupPage/>
+      }
+    ] 
+  },
+  { path: "/", 
+  element: <Page /> ,
+  children: [
+    {
+      path: '/',
+      element : <HomePage/>,
+    },
+  {
+    path : '/contact',
+    element : <ContactPage/>
+  },
+  {
+    path : '/about',
+    element : <AboutUsPage/>
+  },
+  {
+    path : '/feed',
+    element : <FeedPage/>
+  }
+  ]
+  },
   {
     path : '/user',
     element : <UserDashboard/>,

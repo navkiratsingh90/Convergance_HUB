@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Pencil } from "lucide-react";
 import PopupForm from "./PopupUserForm";
 import { useDispatch, useSelector } from "react-redux";
-import { handleTheme } from "../../Features/ThemeSlice";
+import { handleTheme } from "../Features/ThemeSlice";
 
 
 const UserProfile = () => {

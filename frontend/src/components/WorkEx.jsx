@@ -4,7 +4,7 @@
 "use client";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleTheme } from "../../Features/ThemeSlice";
+import { handleTheme } from "../Features/ThemeSlice";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
