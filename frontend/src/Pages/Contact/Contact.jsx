@@ -8,7 +8,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side */}
-      <div className="md:w-1/2 flex flex-col justify-center p-10 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white relative">
+      {/* <div className="md:w-1/2 flex flex-col justify-center p-10 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white relative">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-300/30 to-transparent"></div>
 
         <div className="relative z-10 max-w-lg">
@@ -39,7 +39,7 @@ const ContactPage = () => {
       </div>
 
       {/* Right Side */}
-      <div className="md:w-1/2 bg-slate-950 flex items-center justify-center p-10">
+    {/*}  <div className="md:w-1/2 bg-slate-950 flex items-center justify-center p-10">
         <form className="w-full max-w-lg space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -95,7 +95,7 @@ const ContactPage = () => {
             </Button>
           </div>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 };

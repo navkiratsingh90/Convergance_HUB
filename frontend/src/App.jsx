@@ -22,6 +22,8 @@ import Page from "./Pages/Main/Page";
 import ContactPage from "./Pages/Main/Contact";
 import AboutUsPage from "./Pages/Main/About";
 import FeedPage from "./Pages/Feed/Feed";
+import PendingRequestsPage from "./Pages/Pending-Requests/PendingRequests";
+import EventsPage from "./Pages/Events/Events";
 // import PopupForm from "./components/ui/PopupUserForm";
 
 const router = createBrowserRouter([
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
   {
     path : '/feed',
     element : <FeedPage/>
+  },
+  {
+    path : '/pending-requests',
+    element : <PendingRequestsPage/>
+  },
+  {
+    path : '/events',
+    element : <EventsPage/>
   }
   ]
   },

@@ -209,36 +209,7 @@ const ContactPage = () => {
           </div>
         </div>
 
-        {/* FAQ Section */}
-        <div className={`mt-16 rounded-2xl p-8 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-          <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Frequently Asked Questions</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                question: "How long does it take to get a response?",
-                answer: "We typically respond to all inquiries within 24-48 hours during business days."
-              },
-              {
-                question: "Do you offer technical support?",
-                answer: "Yes, we provide technical support for all our products and services."
-              },
-              {
-                question: "Can I schedule a meeting with your team?",
-                answer: "Absolutely! After submitting your inquiry, we can arrange a meeting at your convenience."
-              },
-              {
-                question: "What information should I include in my message?",
-                answer: "Please include details about your project, timeline, and any specific requirements you have."
-              }
-            ].map((faq, index) => (
-              <div key={index} className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-blue-50'}`}>
-                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{faq.question}</h3>
-                <p className={darkMode ? 'text-gray-400' : 'text-gray-700'}>{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        
       </div>
     </div>
   );

@@ -34,8 +34,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { handleTheme } from "../Features/ThemeSlice";
 
 const Navbar5 = () => {
+  const darkMode = useSelector((state) => state.Theme.darkMode)
+  const dispatch = useDispatch()
   // const [user,setuser] = useState(true)
   const features = [
     { title: "Feed", description: "See the Activity of others", href: "/feed" },
@@ -54,12 +58,13 @@ const Navbar5 = () => {
   };
 
   return (
-    <section className="py-4 flex justify-center align-middle">
-      <div className="container">
-        <nav className="flex items-center justify-between ">
+  <section className="py-4 flex justify-center align-middle 
+  sticky top-0 z-50 bg-[var(--color-darkBlue)]">
+  <div className="container">
+    <nav className="flex items-center justify-between ">
           {/* LOGO */}
           <a href="/" className="flex items-center gap-2">
-            <span className="text-lg font-semibold tracking-tighter">
+            <span className={`text-lg font-semibold tracking-tighter 'text-white' `}>
               CollabriX
             </span>
           </a>
@@ -128,6 +133,23 @@ const Navbar5 = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Link to="/user">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <p>{darkMode ? 'dark-Mode' : 'light-Mode'}</p>
+                  <button
+              onClick={() => dispatch(handleTheme())}
+              className={`p-3 rounded-full ${darkMode ? 'bg-blue-800 text-blue-200' : 'bg-blue-100 text-blue-800'}`}
+            > 
+              {darkMode ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <button onClick={() => console.log("Logout")}>
