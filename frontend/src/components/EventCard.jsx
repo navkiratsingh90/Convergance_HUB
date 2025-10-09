@@ -5,11 +5,11 @@ const EventCard = ({filteredAndSortedEvents, getEventTypeColor, formatDate}) => 
 	const darkMode = useSelector((state) => state.Theme.darkMode)
 	return (
 		<>
-			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+			<div className="flex gap-6 flex-wrap justify-center align-middle">
           {filteredAndSortedEvents.map(event => (
             <div 
               key={event.id} 
-              className={`rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:-translate-y-2 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+              className={`w-[380px] rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:-translate-y-2 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
               onClick={() => setSelectedEvent(event)}
             >
               {/* Event Image */}

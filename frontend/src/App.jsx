@@ -24,6 +24,10 @@ import AboutUsPage from "./Pages/Main/About";
 import FeedPage from "./Pages/Feed/Feed";
 import PendingRequestsPage from "./Pages/Pending-Requests/PendingRequests";
 import EventsPage from "./Pages/Events/Events";
+import ProjectCollabPage from "./Pages/Standalone/Collab";
+// import ProjectCollabPage from "./Pages/Project-Collaboration/ProjectCollab";
+// import CollabPage from "./Pages/Standalone/Collab";
+
 // import PopupForm from "./components/ui/PopupUserForm";
 
 const router = createBrowserRouter([
@@ -67,7 +71,19 @@ const router = createBrowserRouter([
   {
     path : '/events',
     element : <EventsPage/>
-  }
+  },
+  {
+    path : '/project-collaboration',
+    element : <ProjectCollabPage/>
+  },
+  {
+    path : '/projects/*',
+    element : <ProjectCollabPage/>
+  },
+  // {
+  //   path : '/projects/:id',
+  //   element : <ProjectDetailPage/>
+  // }
   ]
   },
   {
