@@ -24,8 +24,11 @@ import AboutUsPage from "./Pages/Main/About";
 import FeedPage from "./Pages/Feed/Feed";
 import PendingRequestsPage from "./Pages/Pending-Requests/PendingRequests";
 import EventsPage from "./Pages/Events/Events";
-import ProjectCollabPage from "./Pages/Standalone/Collab";
-// import ProjectCollabPage from "./Pages/Project-Collaboration/ProjectCollab";
+// import ProjectCollabPage from "./Pages/Standalone/Collab";
+import ProjectCollaboration from "./Pages/Standalone/Collab";
+import ProjectCollabPage from "./Pages/Project-Collaboration/ProjectCollab";
+import ProjectDashboard from "./Pages/Notifications/Message";
+import ChatPage from "./Pages/Notifications/Chat";
 // import CollabPage from "./Pages/Standalone/Collab";
 
 // import PopupForm from "./components/ui/PopupUserForm";
@@ -77,8 +80,16 @@ const router = createBrowserRouter([
     element : <ProjectCollabPage/>
   },
   {
-    path : '/projects/*',
-    element : <ProjectCollabPage/>
+    path : '/project-collaboration/:id',
+    element : <ProjectCollaboration/>
+  },
+  {
+    path : '/notifications',
+    element : <ProjectDashboard/>
+  },
+  {
+    path : '/notifications/chat',
+    element : <ChatPage/>
   },
   // {
   //   path : '/projects/:id',

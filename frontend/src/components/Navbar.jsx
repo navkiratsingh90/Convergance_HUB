@@ -43,7 +43,7 @@ const Navbar5 = () => {
   // const [user,setuser] = useState(true)
   const features = [
     { title: "Feed", description: "See the Activity of others", href: "/feed" },
-    { title: "Chatrooms", description: "Join Chatrooms which resembles your interest", href: "/chatrooms" },
+    { title: "Chatrooms", description: "get all notifications related to your profile here and Join discussions which resembles your interest", href: "/notifications" },
     { title: "Code & Decode", description: "participate in exciting brain bowls to enhance your thinking capacity", href: "/code-decode" },
     { title: "Events", description: "showcase or promote various events to attract developers", href: "/events" },
     { title: "Project Collaboration", description: "Manage your Project with your teamates", href: "project-collaboration" },

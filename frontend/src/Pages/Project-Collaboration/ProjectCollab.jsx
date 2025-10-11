@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
+import { Link } from 'react-router';
 
 const ProjectCollabPage = () => {
   const darkMode = useSelector(state => state.Theme.darkMode);
@@ -499,7 +500,7 @@ const ProjectCollabPage = () => {
                               Posted by: {project.postedBy}
                             </span>
                           </div>
-                          <button
+                          <Link to={`/project-collaboration/${project.id}`}><button
                             onClick={(e) => {
                               e.stopPropagation();
                               // Handle join project logic
@@ -508,8 +509,8 @@ const ProjectCollabPage = () => {
                               darkMode ? 'bg-blue-700 hover:bg-blue-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
                             }`}
                           >
-                            Join Project
-                          </button>
+                            View Project
+                          </button></Link>
                         </div>
                       </div>
                     </div>
@@ -555,174 +556,7 @@ const ProjectCollabPage = () => {
       </div>
 
       {/* Project Detail Modal */}
-      {selectedProject && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className={`rounded-2xl shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-            <div className="relative">
-              <img 
-                src={selectedProject.imageUrl} 
-                alt={selectedProject.title}
-                className="w-full h-64 object-cover"
-              />
-              <button
-                onClick={() => setSelectedProject(null)}
-                className={`absolute top-4 right-4 p-2 rounded-full ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <button
-                onClick={(e) => {
-                  handleDeleteProject(selectedProject.id, e);
-                  setSelectedProject(null);
-                }}
-                className={`absolute top-4 right-16 p-2 rounded-full ${darkMode ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-red-600 hover:bg-red-700 text-white'}`}
-                title="Delete Project"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center space-x-3">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium text-white ${getCategoryColor(selectedProject.category)}`}>
-                    {selectedProject.category}
-                  </span>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium text-white ${getStatusColor(selectedProject.status)}`}>
-                    {selectedProject.status}
-                  </span>
-                </div>
-                <span className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                  {selectedProject.membersNeeded} members needed
-                </span>
-              </div>
-              
-              <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{selectedProject.title}</h2>
-              
-              <div className="mb-6">
-                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Description</h3>
-                <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{selectedProject.description}</p>
-              </div>
-
-              <div className="mb-6">
-                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Problem Statement</h3>
-                <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{selectedProject.problemStatement}</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Tech Stack</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.techStack.map((tech, index) => (
-                      <span 
-                        key={index}
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Roles Needed</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.requirements.map((req, index) => (
-                      <span 
-                        key={index}
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          darkMode ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'
-                        }`}
-                      >
-                        {req}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Team Information</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <div className="flex -space-x-2">
-                        {selectedProject.currentTeamMembers.map((member, index) => (
-                          <img 
-                            key={index}
-                            src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${member.avatar}`}
-                            alt={member.name}
-                            className="w-10 h-10 rounded-full border-2 border-gray-800"
-                          />
-                        ))}
-                      </div>
-                      <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-                        {selectedProject.currentTeamMembers.length} team members
-                      </span>
-                    </div>
-                    <div className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
-                      <strong>Current Team:</strong>
-                      <ul className="mt-1 space-y-1">
-                        {selectedProject.currentTeamMembers.map((member, index) => (
-                          <li key={index}>
-                            {member.name} - {member.role}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Project Details</h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Posted by:</span>
-                      <span className={darkMode ? 'text-white' : 'text-gray-800'}>{selectedProject.postedBy}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Date Posted:</span>
-                      <span className={darkMode ? 'text-white' : 'text-gray-800'}>{formatDate(selectedProject.datePosted)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Last Updated:</span>
-                      <span className={darkMode ? 'text-white' : 'text-gray-800'}>{formatDate(selectedProject.lastUpdated)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Contact:</span>
-                      <span className="text-blue-500">{selectedProject.contact}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-center gap-4">
-                <button
-                  className={`px-6 py-3 rounded-lg font-semibold ${darkMode ? 'bg-blue-700 hover:bg-blue-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
-                >
-                  Join Project
-                </button>
-                <button
-                  onClick={(e) => {
-                    handleDeleteProject(selectedProject.id, e);
-                    setSelectedProject(null);
-                  }}
-                  className={`px-6 py-3 rounded-lg font-semibold ${darkMode ? 'bg-red-700 hover:bg-red-600 text-white' : 'bg-red-600 hover:bg-red-700 text-white'}`}
-                >
-                  Delete Project
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
+      
       {/* Create Project Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
