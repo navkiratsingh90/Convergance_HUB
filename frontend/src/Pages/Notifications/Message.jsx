@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const ProjectDashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [activeSection, setActiveSection] = useState('discussions');
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedJoinRequest, setSelectedJoinRequest] = useState(null);
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showJoinRequestModal, setShowJoinRequestModal] = useState(false);
 
   // Mock data for discussions
   const joinedDiscussions = [
@@ -14,21 +16,36 @@ const ProjectDashboard = () => {
       groupName: "AI Development Team",
       totalMembers: 24,
       lastActivity: "2 hours ago",
-      unreadMessages: 3
+      unreadMessages: 3,
+      profilePic: "🤖",
+      about: "A community of AI/ML enthusiasts working on cutting-edge machine learning projects and research. We share knowledge, collaborate on projects, and discuss the latest trends in artificial intelligence.",
+      onlineMembers: 12,
+      createdDate: "2024-01-15",
+      topics: ["Machine Learning", "Deep Learning", "Neural Networks", "Computer Vision"]
     },
     {
       id: 2,
       groupName: "React Experts",
       totalMembers: 15,
       lastActivity: "1 day ago",
-      unreadMessages: 0
+      unreadMessages: 0,
+      profilePic: "⚛️",
+      about: "Advanced React developers sharing best practices, performance optimization techniques, and exploring the latest React features and ecosystem tools.",
+      onlineMembers: 8,
+      createdDate: "2024-01-10",
+      topics: ["React 18", "Next.js", "State Management", "Performance"]
     },
     {
       id: 3,
       groupName: "Backend Architecture",
       totalMembers: 18,
       lastActivity: "3 hours ago",
-      unreadMessages: 1
+      unreadMessages: 1,
+      profilePic: "🔧",
+      about: "Focused on backend system design, microservices, databases, and scalable architecture patterns. Perfect for developers building robust server-side applications.",
+      onlineMembers: 5,
+      createdDate: "2024-01-12",
+      topics: ["Microservices", "Database Design", "API Development", "DevOps"]
     }
   ];
 
@@ -39,7 +56,11 @@ const ProjectDashboard = () => {
       totalMembers: 156,
       onlineMembers: 23,
       members: ["user1", "user2", "user3", "user4"],
-      description: "Discussing latest ML trends and projects"
+      description: "Discussing latest ML trends and projects",
+      profilePic: "🧠",
+      about: "The largest community for machine learning practitioners. From beginners to experts, we cover everything from basic concepts to advanced research papers and real-world applications.",
+      createdDate: "2023-12-01",
+      topics: ["AI Research", "Data Science", "NLP", "Reinforcement Learning"]
     },
     {
       id: 2,
@@ -47,7 +68,11 @@ const ProjectDashboard = () => {
       totalMembers: 89,
       onlineMembers: 12,
       members: ["user5", "user6", "user7"],
-      description: "Sharing full stack development experiences"
+      description: "Sharing full stack development experiences",
+      profilePic: "🌐",
+      about: "A vibrant community of full-stack developers discussing everything from frontend frameworks to backend technologies, deployment strategies, and career growth.",
+      createdDate: "2024-01-05",
+      topics: ["Full Stack", "Web Development", "Deployment", "Career"]
     },
     {
       id: 3,
@@ -55,7 +80,11 @@ const ProjectDashboard = () => {
       totalMembers: 67,
       onlineMembers: 8,
       members: ["user8", "user9", "user10", "user11", "user12"],
-      description: "Networking and collaboration for startups"
+      description: "Networking and collaboration for startups",
+      profilePic: "🚀",
+      about: "Connect with fellow startup founders, share experiences, discuss challenges, and find potential co-founders or team members for your entrepreneurial journey.",
+      createdDate: "2023-11-20",
+      topics: ["Startups", "Funding", "Product Development", "Growth"]
     },
     {
       id: 4,
@@ -63,7 +92,11 @@ const ProjectDashboard = () => {
       totalMembers: 134,
       onlineMembers: 19,
       members: ["user13", "user14", "user15"],
-      description: "Design discussions and portfolio reviews"
+      description: "Design discussions and portfolio reviews",
+      profilePic: "🎨",
+      about: "A creative space for UI/UX designers to share work, get feedback, discuss design systems, user research, and stay updated with the latest design trends and tools.",
+      createdDate: "2023-12-15",
+      topics: ["UI Design", "UX Research", "Design Systems", "Figma"]
     }
   ];
 
@@ -104,6 +137,66 @@ const ProjectDashboard = () => {
     }
   ];
 
+  // Mock data for join discussion requests
+  const joinDiscussionRequests = [
+    {
+      id: 1,
+      userName: "Emma Wilson",
+      userEmail: "emma.wilson@example.com",
+      userAvatar: "EW",
+      groupName: "AI Development Team",
+      groupAvatar: "🤖",
+      message: "Hi! I'm a machine learning engineer with 3 years of experience in computer vision. I'd love to join your AI discussions and contribute to the community.",
+      skills: ["Python", "TensorFlow", "OpenCV", "PyTorch"],
+      experience: "3 years",
+      appliedDate: "2024-01-23",
+      portfolio: "https://emma-wilson-portfolio.com",
+      github: "https://github.com/emmawilson"
+    },
+    {
+      id: 2,
+      userName: "James Brown",
+      userEmail: "james.brown@example.com",
+      userAvatar: "JB",
+      groupName: "React Experts",
+      groupAvatar: "⚛️",
+      message: "I've been working with React for 4 years and recently started contributing to open-source React libraries. Excited to learn from and share with other experts!",
+      skills: ["React", "TypeScript", "Next.js", "GraphQL"],
+      experience: "4 years",
+      appliedDate: "2024-01-22",
+      portfolio: "https://jamesbrown-dev.com",
+      github: "https://github.com/jamesbrown"
+    },
+    {
+      id: 3,
+      userName: "Lisa Zhang",
+      userEmail: "lisa.zhang@example.com",
+      userAvatar: "LZ",
+      groupName: "UI/UX Design Community",
+      groupAvatar: "🎨",
+      message: "As a senior UX designer at TechCorp, I'd love to share my experiences with design systems and user research methodologies with your community.",
+      skills: ["Figma", "User Research", "Design Systems", "Prototyping"],
+      experience: "5 years",
+      appliedDate: "2024-01-21",
+      portfolio: "https://lisazhang.design",
+      github: "https://github.com/lisazhang"
+    },
+    {
+      id: 4,
+      userName: "Ryan Patel",
+      userEmail: "ryan.patel@example.com",
+      userAvatar: "RP",
+      groupName: "Backend Architecture",
+      groupAvatar: "🔧",
+      message: "I specialize in microservices architecture and cloud infrastructure. Looking forward to discussing best practices and learning from experienced backend architects.",
+      skills: ["Node.js", "Docker", "Kubernetes", "AWS"],
+      experience: "4 years",
+      appliedDate: "2024-01-20",
+      portfolio: "https://ryanpatel.dev",
+      github: "https://github.com/ryanpatel"
+    }
+  ];
+
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
@@ -113,15 +206,28 @@ const ProjectDashboard = () => {
     setShowRequestModal(true);
   };
 
+  const handleViewJoinRequest = (request) => {
+    setSelectedJoinRequest(request);
+    setShowJoinRequestModal(true);
+  };
+
   const handleAcceptRequest = (requestId) => {
     alert(`Accepted collaborator request #${requestId}`);
     setShowRequestModal(false);
-    // In real app, you would update the state/API here
+  };
+
+  const handleAcceptJoinRequest = (requestId) => {
+    alert(`Accepted join request #${requestId}`);
+    setShowJoinRequestModal(false);
+  };
+
+  const handleDeclineJoinRequest = (requestId) => {
+    alert(`Declined join request #${requestId}`);
+    setShowJoinRequestModal(false);
   };
 
   const handleJoinDiscussion = (discussionId) => {
     alert(`Joined discussion #${discussionId}`);
-    // In real app, you would update the state/API here
   };
 
   const CollaboratorRequestModal = () => {
@@ -313,6 +419,7 @@ const ProjectDashboard = () => {
           <div className="flex space-x-8">
             {[
               { id: 'discussions', label: 'Discussions', icon: '💬' },
+              { id: 'join-requests', label: 'Join Requests', icon: '👤' },
               { id: 'requests', label: 'Collaborator Requests', icon: '👥' },
             ].map((tab) => (
               <button
@@ -337,6 +444,13 @@ const ProjectDashboard = () => {
                     {collaboratorRequests.length}
                   </span>
                 )}
+                {tab.id === 'join-requests' && joinDiscussionRequests.length > 0 && (
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    darkMode ? 'bg-orange-600' : 'bg-orange-500 text-white'
+                  }`}>
+                    {joinDiscussionRequests.length}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -359,56 +473,104 @@ const ProjectDashboard = () => {
                 </p>
               </div>
               
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {joinedDiscussions.map((discussion) => (
-                    <div
-                      key={discussion.id}
-                      className={`p-6 rounded-xl border-2 transition-all hover:scale-105 ${
-                        darkMode 
-                          ? 'border-gray-700 hover:border-blue-500' 
-                          : 'border-gray-200 hover:border-blue-400'
-                      }`}
-                    >
-                      <h3 className="text-xl font-semibold mb-3">{discussion.groupName}</h3>
-                      
-                      <div className="space-y-3 mb-4">
-                        <div className="flex justify-between items-center">
-                          <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            Members
-                          </span>
-                          <span className="font-semibold">{discussion.totalMembers}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            Last Activity
-                          </span>
-                          <span className="text-sm">{discussion.lastActivity}</span>
-                        </div>
-                        {discussion.unreadMessages > 0 && (
-                          <div className="flex justify-between items-center">
-                            <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-                              Unread
-                            </span>
-                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                              darkMode ? 'bg-red-600' : 'bg-red-500 text-white'
-                            }`}>
-                              {discussion.unreadMessages}
-                            </span>
-                          </div>
-                        )}
+              <div className="p-6 space-y-6">
+                {joinedDiscussions.map((discussion) => (
+                  <div
+                    key={discussion.id}
+                    className={`p-6 rounded-xl border-2 transition-all hover:scale-[1.02] ${
+                      darkMode 
+                        ? 'border-gray-700 hover:border-blue-500' 
+                        : 'border-gray-200 hover:border-blue-400'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-6">
+                      {/* Profile Picture */}
+                      <div className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl ${
+                        darkMode ? 'bg-gray-700' : 'bg-gray-200'
+                      }`}>
+                        {discussion.profilePic}
                       </div>
                       
-                      <Link to={'/notifications/chat'}><button className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                        darkMode 
-                          ? 'bg-blue-600 hover:bg-blue-700' 
-                          : 'bg-blue-500 hover:bg-blue-600 text-white'
-                      }`}>
-                        View Discussion
-                      </button></Link>
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-2xl font-bold mb-2">{discussion.groupName}</h3>
+                            <div className="flex items-center space-x-4 text-sm mb-3">
+                              <span className={`flex items-center space-x-1 ${
+                                darkMode ? 'text-green-400' : 'text-green-600'
+                              }`}>
+                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span>{discussion.onlineMembers} online</span>
+                              </span>
+                              <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                                {discussion.totalMembers} members
+                              </span>
+                              <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                                Created {discussion.createdDate}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center space-x-3">
+                            {discussion.unreadMessages > 0 && (
+                              <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                                darkMode ? 'bg-red-600' : 'bg-red-500 text-white'
+                              }`}>
+                                {discussion.unreadMessages} unread
+                              </span>
+                            )}
+                            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {discussion.lastActivity}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* About Section */}
+                        <div className="mb-4">
+                          <h4 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            About
+                          </h4>
+                          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                            {discussion.about}
+                          </p>
+                        </div>
+                        
+                        {/* Topics */}
+                        <div className="mb-6">
+                          <h4 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            Popular Topics
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {discussion.topics.map((topic, index) => (
+                              <span
+                                key={index}
+                                className={`px-3 py-1 rounded-full text-sm ${
+                                  darkMode 
+                                    ? 'bg-blue-900 text-blue-200' 
+                                    : 'bg-blue-100 text-blue-800'
+                                }`}
+                              >
+                                {topic}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        {/* Action Button */}
+                        <Link to={'/notifications/chat'}>
+                          <button className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                            darkMode 
+                              ? 'bg-blue-600 hover:bg-blue-700' 
+                              : 'bg-blue-500 hover:bg-blue-600 text-white'
+                          }`}>
+                            Enter Discussion
+                          </button>
+                        </Link>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </section>
 
@@ -424,80 +586,227 @@ const ProjectDashboard = () => {
                 </p>
               </div>
               
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {moreDiscussions.map((discussion) => (
-                    <div
-                      key={discussion.id}
-                      className={`p-6 rounded-xl border-2 transition-all hover:scale-105 ${
-                        darkMode 
-                          ? 'border-gray-700 hover:border-green-500' 
-                          : 'border-gray-200 hover:border-green-400'
-                      }`}
-                    >
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">{discussion.groupName}</h3>
-                          <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {discussion.description}
-                          </p>
-                        </div>
-                        <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          darkMode ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800'
-                        }`}>
-                          {discussion.onlineMembers} online
-                        </div>
+              <div className="p-6 space-y-6">
+                {moreDiscussions.map((discussion) => (
+                  <div
+                    key={discussion.id}
+                    className={`p-6 rounded-xl border-2 transition-all hover:scale-[1.02] ${
+                      darkMode 
+                        ? 'border-gray-700 hover:border-green-500' 
+                        : 'border-gray-200 hover:border-green-400'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-6">
+                      {/* Profile Picture */}
+                      <div className={`w-20 h-20 rounded-2xl flex items-center justify-center text-3xl ${
+                        darkMode ? 'bg-gray-700' : 'bg-gray-200'
+                      }`}>
+                        {discussion.profilePic}
                       </div>
                       
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center space-x-2">
-                          <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            Total Members:
-                          </span>
-                          <span className="font-semibold">{discussion.totalMembers}</span>
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-2xl font-bold mb-2">{discussion.groupName}</h3>
+                            <div className="flex items-center space-x-4 text-sm mb-3">
+                              <span className={`flex items-center space-x-1 ${
+                                darkMode ? 'text-green-400' : 'text-green-600'
+                              }`}>
+                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span>{discussion.onlineMembers} online</span>
+                              </span>
+                              <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                                {discussion.totalMembers} members
+                              </span>
+                              <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                                Created {discussion.createdDate}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                            darkMode ? 'bg-green-900 text-green-200' : 'bg-green-100 text-green-800'
+                          }`}>
+                            {discussion.onlineMembers} online
+                          </div>
                         </div>
                         
-                        <div className="flex -space-x-2">
-                          {discussion.members.map((member, index) => (
-                            <div
-                              key={index}
-                              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 ${
-                                darkMode 
-                                  ? 'bg-blue-600 border-gray-800' 
-                                  : 'bg-blue-100 border-white text-blue-800'
-                              }`}
-                            >
-                              {member.replace('user', 'U')}
-                            </div>
-                          ))}
-                          {discussion.totalMembers > discussion.members.length && (
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 ${
-                              darkMode 
-                                ? 'bg-gray-600 border-gray-800 text-gray-300' 
-                                : 'bg-gray-200 border-white text-gray-600'
-                            }`}>
-                              +{discussion.totalMembers - discussion.members.length}
-                            </div>
-                          )}
+                        {/* About Section */}
+                        <div className="mb-4">
+                          <h4 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            About
+                          </h4>
+                          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                            {discussion.about}
+                          </p>
                         </div>
+                        
+                        {/* Topics and Members */}
+                        <div className="flex justify-between items-center mb-6">
+                          <div>
+                            <h4 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                              Popular Topics
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {discussion.topics.map((topic, index) => (
+                                <span
+                                  key={index}
+                                  className={`px-3 py-1 rounded-full text-sm ${
+                                    darkMode 
+                                      ? 'bg-purple-900 text-purple-200' 
+                                      : 'bg-purple-100 text-purple-800'
+                                  }`}
+                                >
+                                  {topic}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <h4 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                              Recent Members
+                            </h4>
+                            <div className="flex -space-x-2">
+                              {discussion.members.map((member, index) => (
+                                <div
+                                  key={index}
+                                  className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border-2 ${
+                                    darkMode 
+                                      ? 'bg-blue-600 border-gray-800' 
+                                      : 'bg-blue-100 border-white text-blue-800'
+                                  }`}
+                                >
+                                  {member.replace('user', 'U')}
+                                </div>
+                              ))}
+                              {discussion.totalMembers > discussion.members.length && (
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border-2 ${
+                                  darkMode 
+                                    ? 'bg-gray-600 border-gray-800 text-gray-300' 
+                                    : 'bg-gray-200 border-white text-gray-600'
+                                }`}>
+                                  +{discussion.totalMembers - discussion.members.length}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Action Button */}
+                        <button
+                          onClick={() => handleJoinDiscussion(discussion.id)}
+                          className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+                            darkMode 
+                              ? 'bg-green-600 hover:bg-green-700' 
+                              : 'bg-green-500 hover:bg-green-600 text-white'
+                          }`}
+                        >
+                          Join Discussion
+                        </button>
                       </div>
-                      
-                      <button
-                        onClick={() => handleJoinDiscussion(discussion.id)}
-                        className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                          darkMode 
-                            ? 'bg-green-600 hover:bg-green-700' 
-                            : 'bg-green-500 hover:bg-green-600 text-white'
-                        }`}
-                      >
-                        Join Discussion
-                      </button>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </section>
           </div>
+        )}
+
+        {/* Join Requests Section */}
+        {activeSection === 'join-requests' && (
+          <section className={`rounded-2xl shadow-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className="p-6 border-b border-gray-700">
+              <h2 className="text-2xl font-bold flex items-center space-x-3">
+                <span>👤</span>
+                <span>Join Discussion Requests</span>
+                <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                  darkMode ? 'bg-orange-600' : 'bg-orange-500 text-white'
+                }`}>
+                  {joinDiscussionRequests.length} pending
+                </span>
+              </h2>
+              <p className={`mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Manage requests from users who want to join your discussion groups
+              </p>
+            </div>
+            
+            <div className="p-6">
+              <div className="space-y-6">
+                {joinDiscussionRequests.map((request) => (
+                  <div
+                    key={request.id}
+                    className={`p-6 rounded-xl border-2 transition-all hover:scale-[1.02] ${
+                      darkMode 
+                        ? 'border-gray-700 hover:border-orange-500' 
+                        : 'border-gray-200 hover:border-orange-400'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-4">
+                        {/* User Avatar */}
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl ${
+                          darkMode ? 'bg-blue-600' : 'bg-blue-100 text-blue-800'
+                        }`}>
+                          {request.userAvatar}
+                        </div>
+                        
+                        {/* Request Details */}
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-4 mb-3">
+                            <h3 className="text-xl font-semibold">{request.userName}</h3>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              darkMode ? 'bg-gray-700' : 'bg-gray-200'
+                            }`}>
+                              Wants to join
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center space-x-4 mb-3">
+                            <div className="flex items-center space-x-2">
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                                darkMode ? 'bg-gray-700' : 'bg-gray-200'
+                              }`}>
+                                {request.groupAvatar}
+                              </div>
+                              <span className="font-medium">{request.groupName}</span>
+                            </div>
+                            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {request.appliedDate}
+                            </span>
+                          </div> 
+                          </div>
+                      </div>
+                      
+                      {/* Action Buttons */}
+                      <div className="flex flex-col space-y-2">
+                        <button
+                          onClick={() => handleViewJoinRequest(request)}
+                          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+                            darkMode 
+                              ? 'bg-orange-600 hover:bg-orange-700' 
+                              : 'bg-orange-500 hover:bg-orange-600 text-white'
+                          }`}
+                        >
+                          Accept
+                        </button>
+                        
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {joinDiscussionRequests.length === 0 && (
+                <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-xl font-semibold mb-2">No Pending Join Requests</h3>
+                  <p>All join requests have been processed.</p>
+                </div>
+              )}
+            </div>
+          </section>
         )}
 
         {/* Collaborator Requests Section */}
@@ -592,6 +901,7 @@ const ProjectDashboard = () => {
 
       {/* Collaborator Request Modal */}
       <CollaboratorRequestModal />
+
     </div>
   );
 };
