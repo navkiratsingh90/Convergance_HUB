@@ -31,15 +31,20 @@ const projectCollabSchema = new mongoose.Schema({
 		type : Number,
 		required : true,
 	},
-	currentTeamMembers : {
-		type : [
-			{
-				username : mongoose.Schema.Types.ObjectId,
-				ref : "User",
-				roleAssigned : String,
+	currentTeamMembers: [
+		{
+			user: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "User",
+				required: true
+			},
+			roleAssigned: {
+				type: String,
+				required: true
 			}
-		]
-	},
+		}
+	]
+,	
 	createdBy : {
 		type : mongoose.Schema.Types.ObjectId,
 		ref : "User"
@@ -49,6 +54,7 @@ const projectCollabSchema = new mongoose.Schema({
 				type: mongoose.Schema.Types.ObjectId, 
 				ref: 'User' 
 			},
+			
 	]
 	
 },{ timestamps : true})

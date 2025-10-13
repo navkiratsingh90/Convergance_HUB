@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url"; // ✅ Required for __dirname
-import connectDb from "./Utils/db.js";
+import connectDb from "./utils/db.js";
 
 dotenv.config();
 const app = express();
