@@ -131,40 +131,56 @@ export const updateCurrentProject = async (req, res) => {
 };
 
 export const getAllProjects = async (req, res) => {
-    try {
-        // Get query params or defaults
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+  try {
+    const { filters = {}, sort = "createdAt", order = "desc" } = req.body;
+    
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = {};
 
-        const projects = await ProjectCollab.find()
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("createdBy", "username email profilePic")
-            .populate("currentTeamMembers.user", "username email profilePic");
+    Object.keys(filters).forEach((key) => {
+      if (Array.isArray(filters[key]) && filters[key].length > 0) {
+        query[key] = { $in: filters[key] };
+      } else if (filters[key]) {
+        query[key] = filters[key];
+      }
+    });
 
-        const totalProjects = await ProjectCollab.countDocuments();
-        const totalPages = Math.ceil(totalProjects / limit);
+    const sortOrder = order === "asc" ? 1 : -1;
+    const sortObj = { [sort]: sortOrder };
 
-        res.status(200).json({
-            message: "Projects retrieved successfully",
-            data: projects,
-            pagination: {
-                totalProjects,
-                totalPages,
-                currentPage: page,
-                pageSize: limit,
-            },
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: "Internal server error",
-            error: error.message,
-        });
-    }
+    // Query DB
+    const projects = await ProjectCollab.find(query)
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limit)
+      .populate("createdBy", "username email profilePic")
+      .populate("currentTeamMembers.user", "username email profilePic");
+
+    // Pagination info
+    const totalProjects = await ProjectCollab.countDocuments(query);
+    const totalPages = Math.ceil(totalProjects / limit);
+
+    res.status(200).json({
+      message: "Projects retrieved successfully",
+      data: projects,
+      pagination: {
+        totalProjects,
+        totalPages,
+        currentPage: page,
+        pageSize: limit,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
 };
+
 
 export const getProjectById = async (req, res) => {
   try {
@@ -229,9 +245,6 @@ export const deleteProjectById = async (req, res) => {
     });
   }
 };
-
-import requestCollab from "../models/requestCollab.js";
-import ProjectCollab from "../models/projectCollab.js";
 
 export const requestForCollaboration = async (req, res) => {
   try {
