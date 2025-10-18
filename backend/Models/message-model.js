@@ -1,30 +1,42 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
-  discussionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Group",
-    required: true,
+const messageSchema = new mongoose.Schema(
+  {
+    discussionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Discussion", 
+      required: true,
+      index: true, 
+    },
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+    text: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    fileUrl : {
+      type : String,
+      default : null,
+    },
+    contentType:{
+      type:String,
+      enum: ["video","image","text","raw"]
+    },
+    fileAttached: {
+      type: Boolean,
+      default: false,
+    },
+    isDelivered : {
+      type: Boolean,
+      default: false,
+    },
   },
-  sender: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
-    required: true,
-  },
-  text: {
-    type: String,
-    required: true,
-  },
-  attachments: [
-    {
-      filename: String,
-      url: String,
-    }
-  ],
-  isRead: {
-    type: Boolean,
-    default: false,
-  },
-}, { timestamps: true }); 
+  { timestamps: true }
+);
 
 export default mongoose.model("Message", messageSchema);
