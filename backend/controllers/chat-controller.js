@@ -5,7 +5,7 @@ import Message from "../Models/message-model.js";
 
 export const sendMessage = async (req, res) => {
   try {
-    const { senderId, discussionId, text = "", fileAttached = false } = req.body;
+    const { senderId, discussionId, text, fileAttached } = req.body;
 
     if (!senderId || !discussionId) {
       return res.status(400).json({ msg: "Sender ID and Discussion ID are required." });
@@ -94,3 +94,86 @@ export const getAllMessages = async (req, res) => {
     return res.status(500).json({ msg: "Server error", error: error.message });
   }
 };
+
+export const editMessage = async (req, res) => {
+  try {
+    const { text, discussionId, messageId } = req.body;
+    const senderId = req.user?.userID;
+
+    if (!senderId || !discussionId || !text || !messageId) {
+      return res.status(400).json({ msg: "Missing required fields." });
+    }
+
+    const discussion = await Discussion.findById(discussionId);
+    if (!discussion) {
+      return res.status(404).json({ msg: "Discussion not found." });
+    }
+
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return res.status(404).json({ msg: "Message not found." });
+    }
+
+    if (message.senderId.toString() !== senderId.toString()) {
+      return res.status(403).json({ msg: "You are not authorized to edit this message." });
+    }
+
+    message.text = text;
+    const updatedMessage = await message.save();
+
+    await discussion.save();
+
+    return res.status(200).json({
+      msg: "Message updated successfully.",
+      message: updatedMessage,
+    });
+  } catch (error) {
+    console.error("Error editing message:", error);
+    return res.status(500).json({
+      msg: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const { discussionId, messageId } = req.body;
+    const senderId = req.user?.userID;
+
+    if (!senderId || !discussionId || !messageId) {
+      return res.status(400).json({ msg: "Missing required fields." });
+    }
+
+    const discussion = await Discussion.findById(discussionId);
+    if (!discussion) {
+      return res.status(404).json({ msg: "Discussion not found." });
+    }
+
+    const currMessage = await Message.findById(messageId);
+    if (!currMessage) {
+      return res.status(404).json({ msg: "Message not found." });
+    }
+
+    const isSender = currMessage.sender.toString() === senderId.toString();
+    const isAdmin = discussion.admins?.some(
+      (adminId) => adminId.toString() === senderId.toString()
+    );
+
+    if (!isSender && !isAdmin) {
+      return res.status(403).json({ msg: "You are not authorized to delete this message." });
+    }
+
+    await Message.findByIdAndDelete(messageId);
+
+    await Discussion.findByIdAndUpdate(discussionId, {
+      $pull: { messages: messageId },
+    });
+
+    return res.status(200).json({ msg: "Message deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting message:", error);
+    return res.status(500).json({ msg: "Internal server error.", error: error.message });
+  }
+};
+
