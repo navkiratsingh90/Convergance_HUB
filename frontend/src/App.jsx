@@ -29,6 +29,9 @@ import ProjectCollaboration from "./Pages/Standalone/Collab";
 import ProjectCollabPage from "./Pages/Project-Collaboration/ProjectCollab";
 import ProjectDashboard from "./Pages/Notifications/Message";
 import ChatPage from "./Pages/Notifications/Chat";
+import CodeDecodeSection from "./Pages/Code/CodeDecode";
+import DailyCodingChallenge from "./components/DailyCodingChallenge";
+import CSFundamentalsProblem from "./components/CSFundamentalsChallenge";
 // import CollabPage from "./Pages/Standalone/Collab";
 
 // import PopupForm from "./components/ui/PopupUserForm";
@@ -86,6 +89,14 @@ const router = createBrowserRouter([
   {
     path : '/notifications',
     element : <ProjectDashboard/>
+  },
+  {
+    path : '/code-decode',
+    element : <CodeDecodeSection/>
+  },
+  {
+    path : '/code-decode/:id',
+    element : <CSFundamentalsProblem/>
   },
   {
     path : '/notifications/chat',

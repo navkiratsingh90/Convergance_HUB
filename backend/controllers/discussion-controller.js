@@ -281,7 +281,9 @@ export const leaveDiscussion = async (req, res) => {
     if (!isMember) {
       return res.status(400).json({ msg: "You are not a member of this discussion." });
     }
-
+    if (!discussion.admins.includes(adminId))
+      return res.status(403).json({ msg: "Only admins can accept users" });
+    
     discussion.joinedMembers = discussion.joinedMembers.filter(
       (m) => m.username.toString() !== userId.toString()
     );
