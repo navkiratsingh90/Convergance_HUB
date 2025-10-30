@@ -32,6 +32,7 @@ import ChatPage from "./Pages/Notifications/Chat";
 import CodeDecodeSection from "./Pages/Code/CodeDecode";
 import DailyCodingChallenge from "./components/DailyCodingChallenge";
 import CSFundamentalsProblem from "./components/CSFundamentalsChallenge";
+import AptitudeProblem from "./components/AptitudeDailyChallenge";
 // import CollabPage from "./Pages/Standalone/Collab";
 
 // import PopupForm from "./components/ui/PopupUserForm";
@@ -96,7 +97,7 @@ const router = createBrowserRouter([
   },
   {
     path : '/code-decode/:id',
-    element : <CSFundamentalsProblem/>
+    element : <AptitudeProblem/>
   },
   {
     path : '/notifications/chat',

@@ -65,7 +65,7 @@ const Navbar5 = () => {
           {/* LOGO */}
           <a href="/" className="flex items-center gap-2">
             <span className={`text-lg font-semibold tracking-tighter 'text-white' `}>
-              CollabriX
+              DevNautics
             </span>
           </a>
 

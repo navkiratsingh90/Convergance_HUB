@@ -374,21 +374,6 @@ const CodeDecodeSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Challenge Modal */}
-      <DailyCodingChallenge 
-        selectedChallenge={selectedChallenge}
-        setSelectedChallenge={setSelectedChallenge}
-        darkMode={darkMode}
-        userCode={userCode}
-        setUserCode={setUserCode}
-        output={output}
-        setOutput={setOutput}
-        language={language}
-        setLanguage={setLanguage}
-        isRunning={isRunning}
-        setIsRunning={setIsRunning}
-      />
     </div>
   );
 };
