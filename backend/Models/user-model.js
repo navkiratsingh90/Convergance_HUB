@@ -54,9 +54,6 @@ const skillsSchema = new mongoose.Schema({
     languages: [{ 
 			type: String 
 		}],
-    certifications: [{ 
-			type: String 
-		}],
 });
 
 const userSchema = new mongoose.Schema(

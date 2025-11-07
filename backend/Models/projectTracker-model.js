@@ -4,6 +4,11 @@ const taskSchema = new mongoose.Schema({
     description: { 
 			type: String 
 		},
+    priority : {
+      type : String,
+      enum: ["Low", "Medium", "High"],
+        default: "Low",
+    },
     assignedTo: { 
 			type: mongoose.Schema.Types.ObjectId, 
 			ref: "User" 
@@ -24,6 +29,10 @@ const memberRoleSchema = new mongoose.Schema({
 			type: String, 
 			required: true 
 		},
+    totalTasksCompleted : {
+      type : String,
+      default : 0
+    }
 });
 
 const projectFlowSchema = new mongoose.Schema(
@@ -35,22 +44,33 @@ const projectFlowSchema = new mongoose.Schema(
         description: { 
 					type: String 
 				},
+        timeline : {
+          type : [
+            {
+              name : String,
+            completed : { type : Boolean, default : false}
+          }
+          ]
+        },
         leader: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
-        totalMembers: { 
-					type: Number, 
-					default: 1 
-				},
-        members: [memberRoleSchema],
-        tasks: [taskSchema],
+        members: {
+          type : [memberRoleSchema],
+          default: []
+        },
+        tasks: {
+          type : [taskSchema],
+          default: []
+        },
         githubLink: { 
-					type: String 
+					type: String
 				},
         lastCommitMessage: { 
-					type: String 
+					type: String ,
+          default : ""
 				},
         status: {
             type: String,
