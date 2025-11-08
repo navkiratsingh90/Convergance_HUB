@@ -1,5 +1,22 @@
 import mongoose from "mongoose";
 
+const calendarEventSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
+  assignedMembers: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+  ],
+  type: {
+      type: String,
+      enum: ["Meeting", "Deadline", "Milestone", "Other"],
+      default: "Other"
+  },
+  googleCalendarLink: { type: String },
+}, { timestamps: true });
+
+
 const taskSchema = new mongoose.Schema({
     description: { 
 			type: String 
@@ -77,6 +94,7 @@ const projectFlowSchema = new mongoose.Schema(
             enum: ["Active", "On Hold", "Completed", "Not Started"],
             default: "Not Started",
         },
+        calendar: { type: [calendarEventSchema], default: [] }, 
     },
     { timestamps: true }
 );

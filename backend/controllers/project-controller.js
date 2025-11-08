@@ -87,11 +87,9 @@ export const updateCurrentProject = async (req, res) => {
             const userIds = currentTeamMembers.map((m) => m.user.toString());
             const hasDuplicates = new Set(userIds).size !== userIds.length;
             if (hasDuplicates) {
-                return res
-                    .status(400)
-                    .json({
-                        message: "Duplicate users found in currentTeamMembers",
-                    });
+                return res.status(400).json({
+                    message: "Duplicate users found in currentTeamMembers",
+                });
             }
 
             if (currentTeamMembers.length > project.totalTeamSize) {
@@ -131,235 +129,249 @@ export const updateCurrentProject = async (req, res) => {
 };
 
 export const getAllProjects = async (req, res) => {
-  try {
-    const { filters = {}, sort = "createdAt", order = "desc" } = req.body;
-    
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-    const query = {};
+    try {
+        const { filters = {}, sort = "createdAt", order = "desc" } = req.body;
 
-    Object.keys(filters).forEach((key) => {
-      if (Array.isArray(filters[key]) && filters[key].length > 0) {
-        query[key] = { $in: filters[key] };
-      } else if (filters[key]) {
-        query[key] = filters[key];
-      }
-    });
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        const query = {};
 
-    const sortOrder = order === "asc" ? 1 : -1;
-    const sortObj = { [sort]: sortOrder };
+        Object.keys(filters).forEach((key) => {
+            if (Array.isArray(filters[key]) && filters[key].length > 0) {
+                query[key] = { $in: filters[key] };
+            } else if (filters[key]) {
+                query[key] = filters[key];
+            }
+        });
 
-    // Query DB
-    const projects = await ProjectCollab.find(query)
-      .sort(sortObj)
-      .skip(skip)
-      .limit(limit)
-      .populate("createdBy", "username email profilePic")
-      .populate("currentTeamMembers.user", "username email profilePic");
+        const sortOrder = order === "asc" ? 1 : -1;
+        const sortObj = { [sort]: sortOrder };
 
-    // Pagination info
-    const totalProjects = await ProjectCollab.countDocuments(query);
-    const totalPages = Math.ceil(totalProjects / limit);
+        // Query DB
+        const projects = await ProjectCollab.find(query)
+            .sort(sortObj)
+            .skip(skip)
+            .limit(limit)
+            .populate("createdBy", "username email profilePic")
+            .populate("currentTeamMembers.user", "username email profilePic");
 
-    res.status(200).json({
-      message: "Projects retrieved successfully",
-      data: projects,
-      pagination: {
-        totalProjects,
-        totalPages,
-        currentPage: page,
-        pageSize: limit,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Internal server error",
-      error: error.message,
-    });
-  }
+        // Pagination info
+        const totalProjects = await ProjectCollab.countDocuments(query);
+        const totalPages = Math.ceil(totalProjects / limit);
+
+        res.status(200).json({
+            message: "Projects retrieved successfully",
+            data: projects,
+            pagination: {
+                totalProjects,
+                totalPages,
+                currentPage: page,
+                pageSize: limit,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
 };
-
 
 export const getProjectById = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ message: "Project ID is required" });
+        if (!id) {
+            return res.status(400).json({ message: "Project ID is required" });
+        }
+
+        const project = await ProjectCollab.findById(id)
+            .populate("currentTeamMembers.user", "username email profilePic")
+            .populate("createdBy", "username email profilePic");
+
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+        const relatedProjects = await ProjectCollab.find({
+            _id: { $ne: project._id },
+            techStackUsed: { $in: project.techStackUsed },
+        }).limit(5);
+
+        const spotsLeft =
+            project.totalTeamSize - project.currentTeamMembers.length;
+        return res.status(200).json({
+            message: "Project retrieved successfully",
+            data: project,
+            spotsLeft,
+            relatedProjects,
+        });
+    } catch (error) {
+        console.error("Error fetching project:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
     }
-
-    const project = await ProjectCollab.findById(id)
-      .populate("currentTeamMembers.user", "username email profilePic")
-      .populate("createdBy", "username email profilePic");
-
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
-    }
-		const relatedProjects = await ProjectCollab.find({
-			_id: { $ne: project._id },
-			techStackUsed: { $in: project.techStackUsed }
-		}).limit(5);
-		
-		const spotsLeft = project.totalTeamSize - project.currentTeamMembers.length
-    return res.status(200).json({
-      message: "Project retrieved successfully",
-      data: project,
-			spotsLeft,
-			relatedProjects
-    });
-
-  } catch (error) {
-    console.error("Error fetching project:", error);
-    return res.status(500).json({
-      message: "Internal server error",
-      error: error.message
-    });
-  }
 };
 export const deleteProjectById = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ message: "Project ID is required" });
+        if (!id) {
+            return res.status(400).json({ message: "Project ID is required" });
+        }
+
+        const project = await ProjectCollab.findByIdAndDelete(id);
+
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+
+        return res.status(200).json({
+            message: "Project deleted successfully",
+            data: project,
+        });
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
     }
-
-    const project = await ProjectCollab.findByIdAndDelete(id);
-
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
-    }
-
-    return res.status(200).json({
-      message: "Project deleted successfully",
-      data: project
-    });
-
-  } catch (error) {
-    console.error("Error deleting project:", error);
-    return res.status(500).json({
-      message: "Internal server error",
-      error: error.message
-    });
-  }
 };
 
 export const requestForCollaboration = async (req, res) => {
-  try {
-    const projectId = req.params.id; // Correct param
-    const userId = req.user._id;
-    const { email, message, githubLink, resume, experience, rolesApplied } = req.body;
+    try {
+        const projectId = req.params.id; // Correct param
+        const userId = req.user._id;
+        const { email, message, githubLink, resume, experience, rolesApplied } =
+            req.body;
 
-    if (!email || !message || !resume || !experience || !rolesApplied) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    const project = await ProjectCollab.findById(projectId);
-    if (!project) {
-      return res.status(404).json({ message: "Project not found." });
-    }
-
-    const invalidRoles = rolesApplied.filter(
-      (role) => !project.rolesLookingFor.includes(role)
-    );
-    if (invalidRoles.length > 0) {
-      return res.status(400).json({
-        message: `Invalid roles applied: ${invalidRoles.join(", ")}`
-      });
-    }
-
-    const newRequest = await requestCollab.create({
-      email,
-      message,
-      resume,
-      experience,
-      rolesApplied,
-      githubLink: githubLink || null,
-      projectReffered: projectId,
-      createdBy: userId
-    });
-    const updatedProject = await ProjectCollab.findByIdAndUpdate(projectId, {
-        $push : {
-            pendingRequests : newRequest._id
+        if (!email || !message || !resume || !experience || !rolesApplied) {
+            return res
+                .status(400)
+                .json({ message: "All fields are required." });
         }
-    })
-    return res.status(201).json({
-      message: "Collaboration request submitted successfully.",
-      data: newRequest
-    });
 
-  } catch (error) {
-    console.error("Error creating collaboration request:", error);
-    return res.status(500).json({
-      message: "Internal server error.",
-      error: error.message
-    });
-  }
+        const project = await ProjectCollab.findById(projectId);
+        if (!project) {
+            return res.status(404).json({ message: "Project not found." });
+        }
+
+        const invalidRoles = rolesApplied.filter(
+            (role) => !project.rolesLookingFor.includes(role)
+        );
+        if (invalidRoles.length > 0) {
+            return res.status(400).json({
+                message: `Invalid roles applied: ${invalidRoles.join(", ")}`,
+            });
+        }
+
+        const newRequest = await requestCollab.create({
+            email,
+            message,
+            resume,
+            experience,
+            rolesApplied,
+            githubLink: githubLink || null,
+            projectReffered: projectId,
+            createdBy: userId,
+        });
+        const updatedProject = await ProjectCollab.findByIdAndUpdate(
+            projectId,
+            {
+                $push: {
+                    pendingRequests: newRequest._id,
+                },
+            }
+        );
+        return res.status(201).json({
+            message: "Collaboration request submitted successfully.",
+            data: newRequest,
+        });
+    } catch (error) {
+        console.error("Error creating collaboration request:", error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            error: error.message,
+        });
+    }
 };
 
 export const acceptApplication = async (req, res) => {
     try {
-      const { applicationId } = req.params;
-      const { rolesAssigned } = req.body;
-  
-      if (!applicationId || !rolesAssigned) {
-        return res.status(400).json({ message: "Application ID and rolesAssigned are required." });
-      }
+        const { applicationId } = req.params;
+        const { rolesAssigned } = req.body;
 
-      const application = await requestCollab.findById(applicationId);
-      if (!application) {
-        return res.status(404).json({ message: "Application not found." });
-      }
+        if (!applicationId || !rolesAssigned) {
+            return res
+                .status(400)
+                .json({
+                    message: "Application ID and rolesAssigned are required.",
+                });
+        }
 
-      const project = await ProjectCollab.findById(application.projectReffered);
-      if (!project) {
-        return res.status(404).json({ message: "Associated project not found." });
-      }
-  
-      if (req.user._id.toString() !== project.createdBy.toString()) {
-        return res.status(403).json({ message: "You are not authorized to accept applications for this project." });
-      }
-  
-      const invalidRoles = rolesAssigned.filter(
-        (role) => !project.rolesLookingFor.includes(role)
-      );
-      if (invalidRoles.length > 0) {
-        return res.status(400).json({
-          message: `Invalid role(s) assigned: ${invalidRoles.join(", ")}`
+        const application = await requestCollab.findById(applicationId);
+        if (!application) {
+            return res.status(404).json({ message: "Application not found." });
+        }
+
+        const project = await ProjectCollab.findById(
+            application.projectReffered
+        );
+        if (!project) {
+            return res
+                .status(404)
+                .json({ message: "Associated project not found." });
+        }
+
+        if (req.user._id.toString() !== project.createdBy.toString()) {
+            return res
+                .status(403)
+                .json({
+                    message:
+                        "You are not authorized to accept applications for this project.",
+                });
+        }
+
+        const invalidRoles = rolesAssigned.filter(
+            (role) => !project.rolesLookingFor.includes(role)
+        );
+        if (invalidRoles.length > 0) {
+            return res.status(400).json({
+                message: `Invalid role(s) assigned: ${invalidRoles.join(", ")}`,
+            });
+        }
+
+        const acceptedMember = {
+            user: application.createdBy,
+            roleAssigned: rolesAssigned,
+        };
+
+        const updatedProject = await ProjectCollab.findByIdAndUpdate(
+            project._id,
+            {
+                $push: { currentTeamMembers: acceptedMember },
+                $pull: { pendingRequests: application._id },
+            },
+            { new: true }
+        );
+
+        await requestCollab.findByIdAndDelete(applicationId);
+
+        return res.status(200).json({
+            message: "Application accepted successfully.",
+            projectId: updatedProject._id,
+            addedMember: acceptedMember,
+            currentTeamSize: updatedProject.currentTeamMembers.length,
         });
-      }
-
-      const acceptedMember = {
-        user: application.createdBy,
-        roleAssigned: rolesAssigned
-      };
-  
-      const updatedProject = await ProjectCollab.findByIdAndUpdate(
-        project._id,
-        {
-          $push: { currentTeamMembers: acceptedMember },
-          $pull: { pendingRequests: application._id }
-        },
-        { new: true } 
-      );
-  
-      await requestCollab.findByIdAndDelete(applicationId);
-  
-      return res.status(200).json({
-        message: "Application accepted successfully.",
-        projectId: updatedProject._id,
-        addedMember: acceptedMember,
-        currentTeamSize: updatedProject.currentTeamMembers.length
-      });
-  
     } catch (error) {
-      console.error("Error accepting application:", error);
-      return res.status(500).json({
-        message: "Internal server error.",
-        error: error.message
-      });
+        console.error("Error accepting application:", error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            error: error.message,
+        });
     }
-  };
-  
+};
