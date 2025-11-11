@@ -85,10 +85,11 @@ const projectFlowSchema = new mongoose.Schema(
         githubLink: { 
 					type: String
 				},
-        lastCommitMessage: { 
-					type: String ,
-          default : ""
-				},
+        CommitMessage: [
+          {
+            type : String,
+          }
+        ],
         status: {
             type: String,
             enum: ["Active", "On Hold", "Completed", "Not Started"],

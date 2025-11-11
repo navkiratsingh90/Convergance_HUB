@@ -33,6 +33,7 @@ import CodeDecodeSection from "./Pages/Code/CodeDecode";
 import DailyCodingChallenge from "./components/DailyCodingChallenge";
 import CSFundamentalsProblem from "./components/CSFundamentalsChallenge";
 import AptitudeProblem from "./components/AptitudeDailyChallenge";
+import ProjectTracker from "./Pages/Project-Tracker/ProjectTracking";
 // import CollabPage from "./Pages/Standalone/Collab";
 
 // import PopupForm from "./components/ui/PopupUserForm";
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
   {
     path : '/notifications/chat',
     element : <ChatPage/>
+  },
+  {
+    path : '/project-tracker',
+    element : <ProjectTracker/>
   },
   // {
   //   path : '/projects/:id',
